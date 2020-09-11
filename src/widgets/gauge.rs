@@ -92,9 +92,9 @@ impl<'a> Gauge<'a> {
 }
 
 impl<'a> Widget for Gauge<'a> {
-    fn render(mut self, area: Rect, buf: &mut Buffer) {
+    fn render(&self, area: Rect, buf: &mut Buffer) {
         buf.set_style(area, self.style);
-        let gauge_area = match self.block.take() {
+        let gauge_area = match self.block.as_ref() {
             Some(b) => {
                 let inner_area = b.inner(area);
                 b.render(area, buf);
@@ -111,7 +111,7 @@ impl<'a> Widget for Gauge<'a> {
         // label is put at the center of the gauge_area
         let label = {
             let pct = f64::round(self.ratio * 100.0);
-            self.label
+            self.label.clone()
                 .unwrap_or_else(|| Span::from(format!("{}%", pct)))
         };
         let clamped_label_width = gauge_area.width.min(label.width() as u16);
@@ -234,9 +234,9 @@ impl<'a> LineGauge<'a> {
 }
 
 impl<'a> Widget for LineGauge<'a> {
-    fn render(mut self, area: Rect, buf: &mut Buffer) {
+    fn render(&self, area: Rect, buf: &mut Buffer) {
         buf.set_style(area, self.style);
-        let gauge_area = match self.block.take() {
+        let gauge_area = match self.block.as_ref() {
             Some(b) => {
                 let inner_area = b.inner(area);
                 b.render(area, buf);
@@ -251,7 +251,7 @@ impl<'a> Widget for LineGauge<'a> {
 
         let ratio = self.ratio;
         let label = self
-            .label
+            .label.clone()
             .unwrap_or_else(move || Spans::from(format!("{:.0}%", ratio * 100.0)));
         let (col, row) = buf.set_spans(
             gauge_area.left(),
