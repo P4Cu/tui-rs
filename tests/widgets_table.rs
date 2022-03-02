@@ -538,7 +538,7 @@ fn widgets_table_can_have_rows_with_multi_lines() {
                     Constraint::Length(5),
                 ])
                 .column_spacing(1);
-                f.render_stateful_widget(table, size, state);
+                f.render_stateful_widget(&table, size, state);
             })
             .unwrap();
         terminal.backend().assert_buffer(&expected);
@@ -641,7 +641,7 @@ fn widgets_table_can_have_elements_styled_individually() {
                 Constraint::Length(6),
             ])
             .column_spacing(1);
-            f.render_stateful_widget(table, size, &mut state);
+            f.render_stateful_widget(&table, size, &mut state);
         })
         .unwrap();
 
@@ -724,7 +724,7 @@ fn widgets_table_columns_dont_panic() {
         terminal
             .draw(|f| {
                 let size = f.size();
-                f.render_stateful_widget(table, size, state);
+                f.render_stateful_widget(&table, size, state);
             })
             .unwrap();
     };
@@ -777,7 +777,7 @@ fn widgets_table_should_clamp_offset_if_rows_are_removed() {
                 Constraint::Length(5),
             ])
             .column_spacing(1);
-            f.render_stateful_widget(table, size, &mut state);
+            f.render_stateful_widget(&table, size, &mut state);
         })
         .unwrap();
     let expected = Buffer::with_lines(vec![
@@ -806,7 +806,7 @@ fn widgets_table_should_clamp_offset_if_rows_are_removed() {
                     Constraint::Length(5),
                 ])
                 .column_spacing(1);
-            f.render_stateful_widget(table, size, &mut state);
+            f.render_stateful_widget(&table, size, &mut state);
         })
         .unwrap();
     let expected = Buffer::with_lines(vec![

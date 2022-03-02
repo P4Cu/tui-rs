@@ -143,7 +143,7 @@ where
                 .block(Block::default().borders(Borders::ALL).title("List"))
                 .highlight_style(Style::default().add_modifier(Modifier::BOLD))
                 .highlight_symbol("> ");
-            f.render_stateful_widget(tasks, chunks[0], &mut app.tasks.state);
+            f.render_stateful_widget(&tasks, chunks[0], &mut app.tasks.state);
 
             // Draw logs
             let info_style = Style::default().fg(Color::Blue);
@@ -169,7 +169,7 @@ where
                 })
                 .collect();
             let logs = List::new(logs).block(Block::default().borders(Borders::ALL).title("List"));
-            f.render_stateful_widget(logs, chunks[1], &mut app.logs.state);
+            f.render_stateful_widget(&logs, chunks[1], &mut app.logs.state);
         }
 
         let barchart = BarChart::default()

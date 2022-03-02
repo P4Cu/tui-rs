@@ -237,7 +237,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &mut App) {
         .highlight_symbol(">> ");
 
     // We can now render the item list
-    f.render_stateful_widget(items, chunks[0], &mut app.items.state);
+    f.render_stateful_widget(&items, chunks[0], &mut app.items.state);
 
     // Let's do the same for the events.
     // The event list doesn't have any state and only displays the current state of the list.

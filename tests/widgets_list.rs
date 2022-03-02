@@ -26,7 +26,7 @@ fn widgets_list_should_highlight_the_selected_item() {
             let list = List::new(items)
                 .highlight_style(Style::default().bg(Color::Yellow))
                 .highlight_symbol(">> ");
-            f.render_stateful_widget(list, size, &mut state);
+            f.render_stateful_widget(&list, size, &mut state);
         })
         .unwrap();
     let mut expected = Buffer::with_lines(vec!["   Item 1 ", ">> Item 2 ", "   Item 3 "]);
@@ -81,7 +81,7 @@ fn widgets_list_should_truncate_items() {
                 let list = List::new(case.items.clone())
                     .block(Block::default().borders(Borders::RIGHT))
                     .highlight_symbol(">> ");
-                f.render_stateful_widget(list, Rect::new(0, 0, 8, 2), &mut state);
+                f.render_stateful_widget(&list, Rect::new(0, 0, 8, 2), &mut state);
             })
             .unwrap();
         terminal.backend().assert_buffer(&case.expected);
@@ -108,7 +108,7 @@ fn widgets_list_should_clamp_offset_if_items_are_removed() {
                 ListItem::new("Item 5"),
             ];
             let list = List::new(items).highlight_symbol(">> ");
-            f.render_stateful_widget(list, size, &mut state);
+            f.render_stateful_widget(&list, size, &mut state);
         })
         .unwrap();
     let expected = Buffer::with_lines(vec!["   Item 2 ", "   Item 3 ", "   Item 4 ", ">> Item 5 "]);
@@ -121,7 +121,7 @@ fn widgets_list_should_clamp_offset_if_items_are_removed() {
             let size = f.size();
             let items = vec![ListItem::new("Item 3")];
             let list = List::new(items).highlight_symbol(">> ");
-            f.render_stateful_widget(list, size, &mut state);
+            f.render_stateful_widget(&list, size, &mut state);
         })
         .unwrap();
     let expected = Buffer::with_lines(vec!["   Item 3 ", "          ", "          ", "          "]);
@@ -145,7 +145,7 @@ fn widgets_list_should_display_multiline_items() {
             let list = List::new(items)
                 .highlight_style(Style::default().bg(Color::Yellow))
                 .highlight_symbol(">> ");
-            f.render_stateful_widget(list, size, &mut state);
+            f.render_stateful_widget(&list, size, &mut state);
         })
         .unwrap();
     let mut expected = Buffer::with_lines(vec![
@@ -181,7 +181,7 @@ fn widgets_list_should_repeat_highlight_symbol() {
                 .highlight_style(Style::default().bg(Color::Yellow))
                 .highlight_symbol(">> ")
                 .repeat_highlight_symbol(true);
-            f.render_stateful_widget(list, size, &mut state);
+            f.render_stateful_widget(&list, size, &mut state);
         })
         .unwrap();
     let mut expected = Buffer::with_lines(vec![

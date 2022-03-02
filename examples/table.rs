@@ -151,5 +151,5 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &mut App) {
             Constraint::Length(30),
             Constraint::Min(10),
         ]);
-    f.render_stateful_widget(t, rects[0], &mut app.state);
+    f.render_stateful_widget(&t, rects[0], &mut app.state);
 }
