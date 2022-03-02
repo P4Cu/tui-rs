@@ -1,3 +1,5 @@
+use std::cell::RefCell;
+
 use crate::{
     buffer::Buffer,
     layout::{Constraint, Direction, Layout, Rect},
@@ -337,7 +339,7 @@ impl<'a> Table<'a> {
 
 #[derive(Debug, Clone, Default)]
 pub struct TableState {
-    offset: usize,
+    offset: RefCell<usize>,
     selected: Option<usize>,
 }
 
@@ -349,7 +351,7 @@ impl TableState {
     pub fn select(&mut self, index: Option<usize>) {
         self.selected = index;
         if index.is_none() {
-            self.offset = 0;
+            self.offset.replace(0);
         }
     }
 }
@@ -357,7 +359,7 @@ impl TableState {
 impl<'a> StatefulWidget for Table<'a> {
     type State = TableState;
 
-    fn render(&self, area: Rect, buf: &mut Buffer, state: &mut Self::State) {
+    fn render(&self, area: Rect, buf: &mut Buffer, state: &Self::State) {
         if area.area() == 0 {
             return;
         }
@@ -415,13 +417,13 @@ impl<'a> StatefulWidget for Table<'a> {
         if self.rows.is_empty() {
             return;
         }
-        let (start, end) = self.get_row_bounds(state.selected, state.offset, rows_height);
-        state.offset = start;
+        let (start, end) = self.get_row_bounds(state.selected, state.offset.borrow().clone(), rows_height);
+        state.offset.replace(start);
         for (i, table_row) in self
             .rows
             .iter()
             .enumerate()
-            .skip(state.offset)
+            .skip(state.offset.borrow().clone())
             .take(end - start)
         {
             let (row, col) = (table_area.top() + current_height, table_area.left());

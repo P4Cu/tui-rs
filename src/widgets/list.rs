@@ -1,3 +1,5 @@
+use std::cell::RefCell;
+
 use crate::{
     buffer::Buffer,
     layout::{Corner, Rect},
@@ -9,7 +11,7 @@ use unicode_width::UnicodeWidthStr;
 
 #[derive(Debug, Clone, Default)]
 pub struct ListState {
-    offset: usize,
+    offset: RefCell<usize>,
     selected: Option<usize>,
 }
 
@@ -21,7 +23,7 @@ impl ListState {
     pub fn select(&mut self, index: Option<usize>) {
         self.selected = index;
         if index.is_none() {
-            self.offset = 0;
+            self.offset.replace(0);
         }
     }
 }
@@ -170,7 +172,7 @@ impl<'a> List<'a> {
 impl<'a> StatefulWidget for List<'a> {
     type State = ListState;
 
-    fn render(&self, area: Rect, buf: &mut Buffer, state: &mut Self::State) {
+    fn render(&self, area: Rect, buf: &mut Buffer, state: &Self::State) {
         buf.set_style(area, self.style);
         let list_area = match self.block.as_ref() {
             Some(b) => {
@@ -190,8 +192,8 @@ impl<'a> StatefulWidget for List<'a> {
         }
         let list_height = list_area.height as usize;
 
-        let (start, end) = self.get_items_bounds(state.selected, state.offset, list_height);
-        state.offset = start;
+        let (start, end) = self.get_items_bounds(state.selected, state.offset.borrow().clone(), list_height);
+        state.offset.replace(start);
 
         let highlight_symbol = self.highlight_symbol.unwrap_or("");
         let blank_symbol = " ".repeat(highlight_symbol.width());
@@ -202,7 +204,7 @@ impl<'a> StatefulWidget for List<'a> {
             .items
             .iter()
             .enumerate()
-            .skip(state.offset)
+            .skip(state.offset.borrow().clone())
             .take(end - start)
         {
             let (x, y) = match self.start_corner {

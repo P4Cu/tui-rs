@@ -126,7 +126,7 @@ where
     /// let mut frame = terminal.get_frame();
     /// frame.render_stateful_widget(list, area, &mut state);
     /// ```
-    pub fn render_stateful_widget<W>(&mut self, widget: W, area: Rect, state: &mut W::State)
+    pub fn render_stateful_widget<W>(&mut self, widget: W, area: Rect, state: &W::State)
     where
         W: StatefulWidget,
     {
